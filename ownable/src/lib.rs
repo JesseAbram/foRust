@@ -4,6 +4,8 @@ use ink_lang::contract;
 use ink_core::storage;
 use ink_core::memory::format;
 use ink_core::env::{self, println, AccountId};
+use std::convert::TryFrom;
+
 
 
 
@@ -42,6 +44,13 @@ contract! {
        pub (external) fn transfer_ownership(&mut self, new_owner: AccountId){
            self.only_owner(env::caller());
            self.owner.set(new_owner); 
+       }
+
+    //not sure if this is the most secure way to do this.......looking for advice
+       pub (external) fn renounce_ownership(&mut self) {
+          self.only_owner(env::caller());
+          self.owner.set(AccountId::try_from([0x0; 32]).unwrap());
+
        }
     
     }
@@ -89,9 +98,23 @@ mod tests {
         contract.transfer_ownership(bob);
         // will fail
         // contract.transfer_ownership(alice);        
-      
 
     }
+
+    #[test]
+
+    fn renounce_ownership()  {
+        let bob = AccountId::try_from([0x1; 32]).unwrap();
+
+        let mut contract = Ownable::deploy_mock();
+        contract.renounce_ownership();
+
+        // will fail
+        // env::test::set_caller(bob);
+        // contract.renounce_ownership();
+
+    }
+
 
 
 }
