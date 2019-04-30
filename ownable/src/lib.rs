@@ -2,8 +2,7 @@
 
 use ink_lang::contract;
 use ink_core::storage;
-use ink_core::memory::format;
-use ink_core::env::{self, println, AccountId};
+use ink_core::env::{self, AccountId};
 use std::convert::TryFrom;
 
 
@@ -65,11 +64,11 @@ mod tests {
     #[test]
 
     fn is_owner() {
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
+        let _bob = AccountId::try_from([0x1; 32]).unwrap();
 
         let mut contract = Ownable::deploy_mock();
         assert_eq!(contract.is_owner(), true);
-        env::test::set_caller(bob);
+        env::test::set_caller(_bob);
         assert_eq!(contract.is_owner(), false);
 
     }
@@ -77,13 +76,13 @@ mod tests {
     #[test]
 
     fn get_owner() {
-        let alice = AccountId::try_from([0x0; 32]).unwrap();
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
+        let _alice = AccountId::try_from([0x0; 32]).unwrap();
+        let _bob = AccountId::try_from([0x1; 32]).unwrap();
 
 
         let mut contract = Ownable::deploy_mock();
-        assert_eq!(contract.get_owner(), alice);
-        assert_ne!(contract.get_owner(), bob);
+        assert_eq!(contract.get_owner(), _alice);
+        assert_ne!(contract.get_owner(), _bob);
 
 
     }
@@ -91,11 +90,11 @@ mod tests {
     #[test]
 
     fn transfer_ownership() {
-        let alice = AccountId::try_from([0x0; 32]).unwrap();
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
+        let _alice = AccountId::try_from([0x0; 32]).unwrap();
+        let _bob = AccountId::try_from([0x1; 32]).unwrap();
 
         let mut contract = Ownable::deploy_mock();
-        contract.transfer_ownership(bob);
+        contract.transfer_ownership(_bob);
         // will fail
         // contract.transfer_ownership(alice);        
 
@@ -104,7 +103,7 @@ mod tests {
     #[test]
 
     fn renounce_ownership()  {
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
+        let _bob = AccountId::try_from([0x1; 32]).unwrap();
 
         let mut contract = Ownable::deploy_mock();
         contract.renounce_ownership();
