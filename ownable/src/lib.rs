@@ -5,22 +5,9 @@ use ink_core::storage;
 use ink_core::env::{self, AccountId};
 use std::convert::TryFrom;
 
-use parity_codec::{
-    Decode,
-    Encode,
-};
 
-#[derive(Encode, Decode)]
-enum Event {
-    OwnershipTransferred {
-        from: Option<AccountId>,
-        to: Option<AccountId>,
-    },
-}
 
-fn transer_ownership_event (event: Event) {
-    env::deposit_raw_event(&event.encode()[..])
-}
+
 contract! {
     
     struct Ownable {
@@ -56,20 +43,12 @@ contract! {
        pub (external) fn transfer_ownership(&mut self, new_owner: AccountId){
            self.only_owner(env::caller());
            self.owner.set(new_owner); 
-           transer_ownership_event(Event::OwnershipTransferred {
-               from: Some(env::caller()),
-               to: Some(new_owner)
-           });
        }
 
     //not sure if this is the most secure way to do this.......looking for advice
        pub (external) fn renounce_ownership(&mut self) {
           self.only_owner(env::caller());
           self.owner.set(AccountId::try_from([0x0; 32]).unwrap());
-          transer_ownership_event(Event::OwnershipTransferred {
-              from: Some(env::caller()),
-              to: Some(AccountId::try_from([0x0; 32]).unwrap())
-          })
 
        }
     
