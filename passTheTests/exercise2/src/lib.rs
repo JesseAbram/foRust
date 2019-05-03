@@ -1,53 +1,56 @@
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
+
+use ink_core::{
+    storage,
+    env::AccountId,
+};
+use ink_lang::contract;
+
+
+contract! {
+  
+    struct Exercise2 {
+    }
+
+    impl Deploy for Exercise2 {
+        fn deploy(&mut self) {
+
+        }
+    }
+
+    impl Exercise2 {
+        pub(external) fn set(&mut self, key: AccountId, value: u64) {
+
+        }
+
+        pub(external) fn get(&self, key: AccountId) -> u64 {
+            
+        }
+    }
+    impl Exercise2 {
+        fn get_map(&self, of: &AccountId) -> u64 {
+            
+        }
+    }
+
+}
+
 #[cfg(all(test, feature = "test-env"))]
 mod tests {
     use super::*;
     use std::convert::TryFrom;
 
     #[test]
-    fn is_owner() {
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
-
-        let mut contract = Ownable::deploy_mock();
-        assert_eq!(contract.is_owner(), true);
-        env::test::set_caller(bob);
-        assert_eq!(contract.is_owner(), false);
-
-    }
-    
-    #[test]
-    fn get_owner() {
-        let alice = AccountId::try_from([0x0; 32]).unwrap();
-
-        let mut contract = Ownable::deploy_mock();
-        assert_eq!(contract.get_owner(), Some(alice));
-    }
-
-    #[test]
-    fn transfer_ownership_works() {
-        let bob = AccountId::try_from([0x1; 32]).unwrap();
-
-        let mut contract = Ownable::deploy_mock();
-        assert!(contract.transfer_ownership(bob));
-        assert_eq!(contract.get_owner(), Some(bob));
-    }
-
-    #[test]
-    #[should_panic]
-    fn transfer_ownership_fails() {
+    fn get_number() {
         let alice = AccountId::try_from([0x0; 32]).unwrap();
         let bob = AccountId::try_from([0x1; 32]).unwrap();
 
-        let mut contract = Ownable::deploy_mock();
-        assert!(contract.transfer_ownership(bob));
-        // This line should panic since non-owner cannot call this function.
-        contract.transfer_ownership(alice);
+        let mut contract = Exercise2::deploy_mock();
+        contract.set(alice, 3);
+        assert_eq!(contract.get(alice), 3);
+        assert_eq!(contract.get(bob), 0);
+
     }
 
-    #[test]
 
-    fn renounce_ownership_works()  {
-        let mut contract = Ownable::deploy_mock();
-        assert!(contract.renounce_ownership());
-        assert_eq!(contract.get_owner(), None);
-    }
 }
