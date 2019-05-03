@@ -1,3 +1,59 @@
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
+
+use ink_lang::contract;
+use ink_core::storage;
+use ink_core::env::{self, AccountId};
+
+use parity_codec::{
+    Decode,
+    Encode,
+};
+
+#[derive(Encode, Decode)]
+enum Event {
+    OwnershipTransferred {
+        
+    },
+}
+
+fn deposit_event (event: Event) {
+}
+
+contract! {
+    struct Ownable {
+    }
+
+    impl Deploy for Ownable {
+        fn deploy(&mut self) {
+            
+        }
+    }
+
+    impl Ownable {
+        pub (external) fn is_owner(&mut self) -> bool {
+            
+        }
+
+        pub (external) fn get_owner(&mut self) -> Option<AccountId> {
+           
+        }
+
+        pub (external) fn transfer_ownership(&mut self, new_owner: AccountId) -> bool {
+           
+        }
+
+        pub (external) fn renounce_ownership(&mut self) -> bool {
+           
+        }
+    }
+
+    impl Ownable {
+        fn only_owner(&mut self, caller: AccountId) -> bool {
+           
+        }
+    }
+}
+
 #[cfg(all(test, feature = "test-env"))]
 mod tests {
     use super::*;
